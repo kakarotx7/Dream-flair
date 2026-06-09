@@ -7,25 +7,25 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <style>
         :root {
-            --bg-main: #f9f6f0;
+            --bg-main: #fcfbf9;
             --bg-card: #ffffff;
             --primary: #b89742; 
             --accent: #111111; 
             --accent-pink: #d6336c;
             --text-main: #1a1a1a;
-            --text-muted: #767676;
+            --text-muted: #6e6e6e;
             --border-light: #e8e2d9;
-            --radius-premium: 12px;
-            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
-            --shadow-md: 0 10px 30px rgba(0,0,0,0.08);
-            --transition: all 0.25s ease-in-out;
+            --radius-premium: 8px;
+            --shadow-sm: 0 1px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 8px 24px rgba(0,0,0,0.06);
+            --transition: all 0.2s ease-in-out;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
         }
 
         body {
@@ -34,7 +34,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Administrative Terminal Cover */
+        /* Administrative Setup Control Overlay Panel */
         .admin-dashboard {
             display: none;
             background: #ffffff;
@@ -63,34 +63,33 @@
 
         .admin-input {
             width: 100%;
-            padding: 0.6rem;
-            margin: 0.4rem 0 0.8rem 0;
+            padding: 0.5rem;
+            margin: 0.3rem 0 0.6rem 0;
             border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 0.9rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
         }
 
         .admin-btn {
             width: 100%;
-            padding: 0.6rem;
+            padding: 0.5rem;
             border: none;
-            border-radius: 6px;
+            border-radius: 4px;
             font-weight: bold;
             cursor: pointer;
             color: white;
         }
 
-        /* Shopify-Style Premium Header Navigation */
+        /* Shopify-Style Top Branding Header bar */
         header {
             background: var(--bg-card);
-            padding: 1.5rem;
+            padding: 1.25rem;
             text-align: center;
             border-bottom: 1px solid var(--border-light);
-            box-shadow: var(--shadow-sm);
         }
 
         .brand-logo {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 800;
             letter-spacing: -0.5px;
             color: var(--accent);
@@ -98,33 +97,71 @@
         }
 
         .brand-location {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--text-muted);
             letter-spacing: 2px;
-            margin-top: 0.2rem;
+            margin-top: 0.15rem;
             text-transform: uppercase;
         }
 
-        /* Clean Amazon/Shopify Styled Category Tabs Bar */
-        .category-navigation-bar {
+        /* Functional Search and Category Navigation Hub Workspace Area */
+        .search-navigation-terminal {
             background: var(--bg-card);
             border-bottom: 1px solid var(--border-light);
+            padding: 0.75rem 1rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .search-dock-container {
+            max-width: 500px;
+            margin: 0 auto 0.75rem auto;
+            position: relative;
+        }
+
+        .realtime-search-field {
+            width: 100%;
+            padding: 0.65rem 1rem 0.65rem 2.25rem;
+            font-size: 0.9rem;
+            border: 1px solid var(--border-light);
+            border-radius: 24px;
+            outline: none;
+            background: #f7f5f0;
+            transition: var(--transition);
+        }
+
+        .realtime-search-field:focus {
+            background: #ffffff;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+        }
+
+        .search-icon-marker {
+            position: absolute;
+            left: 0.85rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            pointer-events: none;
+        }
+
+        .category-navigation-bar {
             display: flex;
             justify-content: center;
-            gap: 0.5rem;
+            gap: 0.35rem;
             overflow-x: auto;
-            padding: 0.75rem 1rem;
+            padding: 0.25rem 0;
             white-space: nowrap;
         }
 
         .category-tab {
             background: none;
             border: 1px solid transparent;
-            padding: 0.5rem 1rem;
-            font-size: 0.9rem;
+            padding: 0.4rem 0.85rem;
+            font-size: 0.85rem;
             font-weight: 600;
             color: var(--text-muted);
-            border-radius: 20px;
+            border-radius: 16px;
             cursor: pointer;
             transition: var(--transition);
         }
@@ -134,32 +171,38 @@
             color: #ffffff;
         }
 
-        /* Main Structural Split Core Panel Layout Grid */
+        /* Balanced Split Split Layout Container Frame */
         .marketplace-container {
-            max-width: 1300px;
-            margin: 1.5rem auto;
-            padding: 0 1rem;
+            max-width: 1340px;
+            margin: 1rem auto;
+            padding: 0 0.75rem;
             display: grid;
             grid-template-columns: 1fr;
-            gap: 2rem;
+            gap: 1.5rem;
         }
 
         @media (min-width: 992px) {
             .marketplace-container {
-                grid-template-columns: 1.6fr 1fr;
+                grid-template-columns: 1.7fr 1fr;
             }
         }
 
-        /* Compact Professional Dual-Column/Row Layout */
+        /* Professional E-Commerce Densely Structured Micro-Grid Asset Box */
         .catalog-display-shelf {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
+            gap: 0.75rem;
         }
 
-        @media (min-width: 600px) {
+        @media (min-width: 480px) {
             .catalog-display-shelf {
-                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (min-width: 768px) {
+            .catalog-display-shelf {
+                grid-template-columns: repeat(4, 1fr);
             }
         }
 
@@ -176,15 +219,15 @@
         }
 
         .premium-product-card:hover {
-            transform: translateY(-4px);
             box-shadow: var(--shadow-md);
+            border-color: #ccc;
         }
 
         .product-image-container {
             width: 100%;
-            padding-top: 125%; /* Fixed professional aspect ratio */
+            padding-top: 115%; /* Compact aspect layout framework matrix */
             position: relative;
-            background: #f7f7f7;
+            background: #f9f9f9;
         }
 
         .product-image-container img {
@@ -197,27 +240,27 @@
         }
 
         .product-meta-details {
-            padding: 0.85rem;
+            padding: 0.6rem;
             display: flex;
             flex-direction: column;
-            gap: 0.3rem;
+            gap: 0.2rem;
             flex-grow: 1;
         }
 
         .product-tag {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: 700;
             text-transform: uppercase;
             color: var(--primary);
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
         }
 
         .product-name-heading {
-            font-size: 0.95rem;
-            font-weight: 600;
+            font-size: 0.85rem;
+            font-weight: 500;
             color: var(--accent);
-            line-height: 1.3;
-            height: 2.6rem;
+            line-height: 1.25;
+            height: 2.2rem;
             overflow: hidden;
             display: -webkit-box;
             -webkit-line-clamp: 2;
@@ -225,24 +268,22 @@
         }
 
         .product-pricing-node {
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             font-weight: 700;
             color: var(--accent);
-            margin-top: 0.2rem;
+            margin: 0.1rem 0;
         }
 
         .product-size-selector-row {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            margin-top: 0.4rem;
+            margin-top: 0.2rem;
+            margin-bottom: 0.4rem;
         }
 
         .product-size-dropdown {
             width: 100%;
-            padding: 0.35rem;
-            font-size: 0.8rem;
-            border-radius: 6px;
+            padding: 0.25rem;
+            font-size: 0.75rem;
+            border-radius: 4px;
             border: 1px solid var(--border-light);
             background: #fff;
             font-weight: 600;
@@ -253,10 +294,10 @@
             background: var(--accent);
             color: #ffffff;
             border: none;
-            padding: 0.65rem;
-            font-size: 0.85rem;
-            font-weight: 700;
-            border-radius: 8px;
+            padding: 0.45rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border-radius: 4px;
             cursor: pointer;
             transition: var(--transition);
             margin-top: auto;
@@ -264,61 +305,60 @@
 
         .add-to-bag-cta:hover { background: #333333; }
 
-        /* Shopify Inline Admin Layout Controls */
         .inline-management-drawer {
             display: none;
             background: #fffdf9;
             border-top: 1px dashed var(--primary);
-            padding: 0.75rem;
-            font-size: 0.8rem;
+            padding: 0.5rem;
+            font-size: 0.75rem;
         }
         body.admin-authenticated .inline-management-drawer { display: block; }
 
-        /* Premium Cart Terminal Side Panel Window */
+        /* Professional Right Sticky Bag Terminal Card View Layout Window */
         .checkout-terminal-dock {
             background: var(--bg-card);
             border: 1px solid var(--border-light);
             border-radius: var(--radius-premium);
-            padding: 1.5rem;
+            padding: 1.25rem;
             box-shadow: var(--shadow-sm);
             height: fit-content;
             position: sticky;
-            top: 1.5rem;
+            top: 1rem;
         }
 
         .dock-header {
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             font-weight: 700;
             border-bottom: 1px solid var(--border-light);
-            padding-bottom: 0.75rem;
-            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
         }
 
         .cart-line-items-stack {
-            max-height: 280px;
+            max-height: 220px;
             overflow-y: auto;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
         }
 
         .cart-row-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.6rem 0;
+            padding: 0.5rem 0;
             border-bottom: 1px solid #f5f5f5;
         }
 
-        .form-input-group { margin-bottom: 1rem; }
-        .form-input-group label { display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.3rem; text-transform: uppercase; }
-        .checkout-field-element { width: 100%; padding: 0.7rem; border: 1px solid var(--border-light); border-radius: 8px; outline: none; font-size: 0.9rem; }
+        .form-input-group { margin-bottom: 0.75rem; }
+        .form-input-group label { display: block; font-size: 0.75rem; font-weight: 700; margin-bottom: 0.2rem; text-transform: uppercase; }
+        .checkout-field-element { width: 100%; padding: 0.55rem; border: 1px solid var(--border-light); border-radius: 6px; outline: none; font-size: 0.85rem; }
         .checkout-field-element:focus { border-color: var(--accent); }
 
-        .shipping-matrix-grid { display: flex; gap: 0.75rem; margin-top: 0.4rem; }
+        .shipping-matrix-grid { display: flex; gap: 0.5rem; margin-top: 0.25rem; }
         .shipping-card-option {
             flex: 1;
             border: 1px solid var(--border-light);
-            padding: 0.75rem;
-            border-radius: 8px;
+            padding: 0.5rem;
+            border-radius: 6px;
             cursor: pointer;
             text-align: center;
             font-weight: 600;
@@ -330,27 +370,26 @@
             background: #fafafa;
         }
 
-        /* Modernized Secure QR Checkout Asset Container */
         .bank-qr-checkout-wrapper {
             background: #faf9f6;
             border: 1px solid var(--border-light);
-            border-radius: 8px;
-            padding: 1rem;
+            border-radius: 6px;
+            padding: 0.75rem;
             text-align: center;
-            margin: 1.25rem 0;
+            margin: 1rem 0;
         }
 
         .qr-graphic-shield {
-            width: 150px;
-            height: 150px;
+            width: 130px;
+            height: 130px;
             background: #ffffff;
             border: 1px solid var(--border-light);
-            margin: 0.5rem auto;
+            margin: 0.4rem auto;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 0.5rem;
-            border-radius: 6px;
+            padding: 0.4rem;
+            border-radius: 4px;
         }
 
         .complete-checkout-btn {
@@ -358,40 +397,38 @@
             background: var(--accent-pink);
             color: #ffffff;
             border: none;
-            padding: 0.9rem;
-            font-size: 1rem;
+            padding: 0.75rem;
+            font-size: 0.95rem;
             font-weight: 700;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(214, 51, 108, 0.15);
             transition: var(--transition);
         }
         .complete-checkout-btn:hover { background: #bd265b; }
 
-        /* Floating Admin Control Asset Anchor Button */
         .floating-lock-icon {
             position: fixed;
-            bottom: 1.25rem;
-            right: 1.25rem;
+            bottom: 1rem;
+            right: 1rem;
             background: var(--accent);
             color: #ffffff;
-            width: 48px;
-            height: 48px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             border: none;
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             cursor: pointer;
             z-index: 999999;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
         }
 
         footer {
             background: #ffffff;
             border-top: 1px solid var(--border-light);
-            padding: 2.5rem 1rem;
+            padding: 2rem 1rem;
             text-align: center;
-            margin-top: 4rem;
-            font-size: 0.9rem;
+            margin-top: 3rem;
+            font-size: 0.85rem;
             color: var(--text-muted);
         }
     </style>
@@ -401,10 +438,10 @@
     <button class="floating-lock-icon" onclick="openSystemTerminal()">⚙️</button>
 
     <div class="admin-dashboard" id="adminConsole">
-        <h2 style="margin-bottom:1rem; font-size:1.2rem; color:var(--accent);">⚙️ Admin Dashboard Terminal</h2>
+        <h2 style="margin-bottom:1rem; font-size:1.1rem; color:var(--accent);">⚙️ Admin Dashboard Terminal</h2>
         <div class="admin-grid">
             <div class="admin-card">
-                <h4 style="margin-bottom:0.5rem;">Add New Product Asset</h4>
+                <h4 style="margin-bottom:0.4rem; font-size:0.9rem;">Add New Product Asset</h4>
                 <input type="text" id="add-title" class="admin-input" placeholder="Product Title">
                 <select id="add-category" class="admin-input">
                     <option value="Kurthi">Kurthi</option>
@@ -417,12 +454,12 @@
                 <button onclick="commitNewAsset()" class="admin-btn" style="background:#2b8a3e;">Add Product</button>
             </div>
             <div class="admin-card">
-                <h4 style="margin-bottom:0.5rem;">Update Fonepay QR Code</h4>
+                <h4 style="margin-bottom:0.4rem; font-size:0.9rem;">Update Fonepay QR Code Image URL</h4>
                 <input type="text" id="global-qr-field" class="admin-input" placeholder="Paste Direct Image URL for Bank QR">
                 <button onclick="commitQRManifestUpdate()" class="admin-btn" style="background:#1c7ed6;">Save QR Code Link</button>
             </div>
         </div>
-        <button onclick="closeSystemTerminal()" style="margin-top:1rem; padding:0.4rem 1rem; border-radius:4px; border:1px solid #ccc; cursor:pointer; font-weight:600;">Exit Dashboard</button>
+        <button onclick="closeSystemTerminal()" style="margin-top:1rem; padding:0.3rem 0.75rem; border-radius:4px; border:1px solid #ccc; cursor:pointer; font-weight:600; font-size:0.8rem;">Exit Dashboard</button>
     </div>
 
     <header>
@@ -430,12 +467,19 @@
         <div class="brand-location">Gautam Path, Dharan</div>
     </header>
 
-    <div class="category-navigation-bar">
-        <button class="category-tab active-tab" onclick="filterCatalogSelection('All', this)">All Items</button>
-        <button class="category-tab" onclick="filterCatalogSelection('Kurthi', this)">Kurthis</button>
-        <button class="category-tab" onclick="filterCatalogSelection('Saree', this)">Sarees</button>
-        <button class="category-tab" onclick="filterCatalogSelection('Jewelry Set', this)">Jewelry</button>
-        <button class="category-tab" onclick="filterCatalogSelection('Handbags', this)">Handbags</button>
+    <div class="search-navigation-terminal">
+        <div class="search-dock-container">
+            <span class="search-icon-marker">🔍</span>
+            <input type="text" id="liveSearchEngineField" class="realtime-search-field" placeholder="Search collection items here..." oninput="triggerLiveCatalogSearch()">
+        </div>
+        
+        <div class="category-navigation-bar">
+            <button class="category-tab active-tab" onclick="filterCatalogSelection('All', this)">All Items</button>
+            <button class="category-tab" onclick="filterCatalogSelection('Kurthi', this)">Kurthis</button>
+            <button class="category-tab" onclick="filterCatalogSelection('Saree', this)">Sarees</button>
+            <button class="category-tab" onclick="filterCatalogSelection('Jewelry Set', this)">Jewelry</button>
+            <button class="category-tab" onclick="filterCatalogSelection('Handbags', this)">Handbags</button>
+        </div>
     </div>
 
     <div class="marketplace-container">
@@ -448,7 +492,7 @@
             <div class="dock-header">Bag Summary</div>
             
             <div class="cart-line-items-stack" id="cartStack">
-                <p style="text-align:center; color:var(--text-muted); padding:2rem 0; font-size:0.9rem;">Your shopping bag is empty.</p>
+                <p style="text-align:center; color:var(--text-muted); padding:1.5rem 0; font-size:0.85rem;">Your shopping bag is empty.</p>
             </div>
 
             <form onsubmit="executeOrderPayload(event)">
@@ -469,32 +513,32 @@
                     <label>Delivery Option</label>
                     <div class="shipping-matrix-grid">
                         <div class="shipping-card-option selected-shipping" id="ship-office" onclick="toggleShippingStrategy('office', 180)">
-                            <div style="font-size:0.9rem;">Office Delivery</div>
-                            <div style="font-size:0.8rem; color:var(--text-muted); margin-top:0.1rem;">Rs. 180</div>
+                            <div style="font-size:0.8rem;">Office Delivery</div>
+                            <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.1rem;">Rs. 180</div>
                         </div>
                         <div class="shipping-card-option" id="ship-home" onclick="toggleShippingStrategy('home', 220)">
-                            <div style="font-size:0.9rem;">Home Delivery</div>
-                            <div style="font-size:0.8rem; color:var(--text-muted); margin-top:0.1rem;">Rs. 220</div>
+                            <div style="font-size:0.8rem;">Home Delivery</div>
+                            <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.1rem;">Rs. 220</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="bank-qr-checkout-wrapper">
-                    <div style="font-size:0.85rem; font-weight:700; color:var(--accent);">Scan via Mobile Banking App</div>
+                    <div style="font-size:0.8rem; font-weight:700; color:var(--accent);">Scan via Mobile Banking App</div>
                     <div class="qr-graphic-shield">
                         <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=DreamFlairCollectionDharan" id="checkoutQRDOMElement" style="width:100%; height:100%; object-fit:contain;" alt="Bank Processing Merchant QR Code Profile">
                     </div>
-                    <div style="font-size:0.75rem; color:var(--text-muted);">Please attach payment verification screenshot in WhatsApp chat after submittal.</div>
+                    <div style="font-size:0.7rem; color:var(--text-muted);">Please attach payment verification screenshot in WhatsApp chat after submittal.</div>
                 </div>
 
-                <div style="margin:1rem 0; font-size:0.9rem; display:flex; flex-direction:column; gap:0.35rem;">
+                <div style="margin:0.75rem 0; font-size:0.85rem; display:flex; flex-direction:column; gap:0.3rem;">
                     <div style="display:flex; justify-content:space-between; color:var(--text-muted);">
                         <span>Subtotal:</span><span>Rs. <span id="summarySubtotal">0</span></span>
                     </div>
                     <div style="display:flex; justify-content:space-between; color:var(--text-muted);">
                         <span>Shipping:</span><span>Rs. <span id="summaryShipping">180</span></span>
                     </div>
-                    <div style="display:flex; justify-content:space-between; font-weight:700; font-size:1.15rem; color:var(--accent); border-top:1px dashed #e8e2d9; padding-top:0.5rem; margin-top:0.25rem;">
+                    <div style="display:flex; justify-content:space-between; font-weight:700; font-size:1.05rem; color:var(--accent); border-top:1px dashed #e8e2d9; padding-top:0.4rem; margin-top:0.2rem;">
                         <span>Total Due:</span><span>Rs. <span id="summaryGrandTotal">0</span></span>
                     </div>
                 </div>
@@ -506,7 +550,7 @@
 
     <footer>
         <p>📍 Location: Gautam Path, Dharan, Nepal</p>
-        <p style="margin-top:0.3rem; font-size:0.8rem;">© 2026 Dream Flair Collection. All Rights Reserved.</p>
+        <p style="margin-top:0.3rem; font-size:0.75rem;">© 2026 Dream Flair Collection. All Rights Reserved.</p>
     </footer>
 
     <script>
@@ -526,21 +570,22 @@
         let runningShippingCost = 180;
         let selectedShippingTypeString = "Office Delivery";
         let targetedCategoryFilter = "All";
+        let localSearchQuery = "";
 
         window.addEventListener('DOMContentLoaded', () => {
-            const memoryManifest = localStorage.getItem('df_catalog_manifest_v2');
+            const memoryManifest = localStorage.getItem('df_catalog_manifest_v3');
             if (memoryManifest) {
                 databaseState = JSON.parse(memoryManifest);
                 if (databaseState.length > 0 && !databaseState[0].id.startsWith('asset_df_')) {
                     databaseState = foundationalCatalog;
-                    localStorage.setItem('df_catalog_manifest_v2', JSON.stringify(foundationalCatalog));
+                    localStorage.setItem('df_catalog_manifest_v3', JSON.stringify(foundationalCatalog));
                 }
             } else {
                 databaseState = foundationalCatalog;
-                localStorage.setItem('df_catalog_manifest_v2', JSON.stringify(foundationalCatalog));
+                localStorage.setItem('df_catalog_manifest_v3', JSON.stringify(foundationalCatalog));
             }
 
-            const activeQRURL = localStorage.getItem('df_qr_string_override');
+            const activeQRURL = localStorage.getItem('df_qr_string_override_v3');
             if(activeQRURL) {
                 document.getElementById('checkoutQRDOMElement').src = activeQRURL;
                 document.getElementById('global-qr-field').value = activeQRURL;
@@ -568,20 +613,35 @@
             document.body.classList.remove('admin-authenticated');
         }
 
+        function triggerLiveCatalogSearch() {
+            localSearchQuery = document.getElementById('liveSearchEngineField').value.trim().toLowerCase();
+            buildStorefrontCatalogUI();
+        }
+
         function buildStorefrontCatalogUI() {
             const displayShelfTarget = document.getElementById('catalogDisplayShelf');
             displayShelfTarget.innerHTML = '';
 
-            const filteredSet = targetedCategoryFilter === "All" ? databaseState : databaseState.filter(item => item.category === targetedCategoryFilter);
+            // Apply category selection filter logic
+            let filteredSet = targetedCategoryFilter === "All" ? databaseState : databaseState.filter(item => item.category === targetedCategoryFilter);
+
+            // Apply live text search matching mechanics
+            if (localSearchQuery !== "") {
+                filteredSet = filteredSet.filter(item => item.name.toLowerCase().includes(localSearchQuery));
+            }
 
             if(filteredSet.length === 0) {
-                displayShelfTarget.innerHTML = `<div style="grid-column: span 2; text-align:center; padding:3rem 0; color:var(--text-muted);">No products found in this section.</div>`;
+                displayShelfTarget.innerHTML = `<div style="grid-column: span 4; text-align:center; padding:3rem 0; color:var(--text-muted); font-size:0.85rem;">No matching items found.</div>`;
                 return;
             }
 
             filteredSet.forEach(product => {
                 const layoutElement = document.createElement('div');
                 layoutElement.className = "premium-product-card";
+                
+                // Hide sizing array if item category matches Handbags or Jewelry Sets natively
+                const hideSizeRequirement = (product.category === "Handbags" || product.category === "Jewelry Set");
+                
                 layoutElement.innerHTML = `
                     <div class="product-image-container">
                         <img src="${product.image}" alt="${product.name}" onerror="this.src='https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=500'">
@@ -591,6 +651,7 @@
                         <h3 class="product-name-heading">${product.name}</h3>
                         <div class="product-pricing-node">Rs. ${product.price}</div>
                         
+                        ${hideSizeRequirement ? '' : `
                         <div class="product-size-selector-row">
                             <select id="size-node-${product.id}" class="product-size-dropdown">
                                 <option value="M">Size M</option>
@@ -599,16 +660,17 @@
                                 <option value="XXL">Size XXL</option>
                             </select>
                         </div>
+                        `}
                         
-                        <button type="button" class="add-to-bag-cta" onclick="appendItemToActiveBag('${product.id}')" style="margin-top:0.75rem;">Add to Bag</button>
+                        <button type="button" class="add-to-bag-cta" onclick="appendItemToActiveBag('${product.id}')">Add to Bag</button>
                     </div>
                     <div class="inline-management-drawer">
-                        <label>Title</label><input type="text" class="admin-input" id="edit-title-${product.id}" value="${product.name}" style="padding:0.3rem; margin-bottom:0.4rem;">
-                        <label>Price</label><input type="number" class="admin-input" id="edit-price-${product.id}" value="${product.price}" style="padding:0.3rem; margin-bottom:0.4rem;">
-                        <label>Image Link</label><input type="text" class="admin-input" id="edit-img-${product.id}" value="${product.image}" style="padding:0.3rem; margin-bottom:0.4rem;">
+                        <label>Title</label><input type="text" class="admin-input" id="edit-title-${product.id}" value="${product.name}" style="padding:0.25rem;">
+                        <label>Price</label><input type="number" class="admin-input" id="edit-price-${product.id}" value="${product.price}" style="padding:0.25rem;">
+                        <label>Image Link</label><input type="text" class="admin-input" id="edit-img-${product.id}" value="${product.image}" style="padding:0.25rem;">
                         <div style="display:flex; gap:0.25rem;">
-                            <button onclick="saveInlineEdits('${product.id}')" style="background:#2b8a3e; color:white; border:none; padding:0.3rem; font-weight:bold; border-radius:4px; cursor:pointer; flex:1;">Save</button>
-                            <button onclick="removeAssetListing('${product.id}')" style="background:#e03131; color:white; border:none; padding:0.3rem; font-weight:bold; border-radius:4px; cursor:pointer; flex:1;">Delete</button>
+                            <button onclick="saveInlineEdits('${product.id}')" style="background:#2b8a3e; color:white; border:none; padding:0.25rem; font-weight:bold; border-radius:4px; cursor:pointer; flex:1;">Save</button>
+                            <button onclick="removeAssetListing('${product.id}')" style="background:#e03131; color:white; border:none; padding:0.25rem; font-weight:bold; border-radius:4px; cursor:pointer; flex:1;">Delete</button>
                         </div>
                     </div>
                 `;
@@ -630,7 +692,7 @@
             const image = document.getElementById('add-image').value.trim();
 
             if(!title || !price) {
-                alert("Please fill out the Title and Price fields.");
+                alert("Please fill out Title and Price parameters.");
                 return;
             }
 
@@ -643,13 +705,13 @@
             };
 
             databaseState.push(itemPayload);
-            localStorage.setItem('df_catalog_manifest_v2', JSON.stringify(databaseState));
+            localStorage.setItem('df_catalog_manifest_v3', JSON.stringify(databaseState));
             buildStorefrontCatalogUI();
 
             document.getElementById('add-title').value = '';
             document.getElementById('add-price').value = '';
             document.getElementById('add-image').value = '';
-            alert("New listing injected successfully.");
+            alert("New boutique item saved locally.");
         }
 
         function saveInlineEdits(productId) {
@@ -663,16 +725,16 @@
                 databaseState[matchIndex].price = priceValue;
                 databaseState[matchIndex].image = imgValue;
 
-                localStorage.setItem('df_catalog_manifest_v2', JSON.stringify(databaseState));
+                localStorage.setItem('df_catalog_manifest_v3', JSON.stringify(databaseState));
                 buildStorefrontCatalogUI();
-                alert("Listing configuration updated.");
+                alert("Product saved successfully.");
             }
         }
 
         function removeAssetListing(productId) {
             if(confirm("Permanently delete this product listing?")) {
                 databaseState = databaseState.filter(item => item.id !== productId);
-                localStorage.setItem('df_catalog_manifest_v2', JSON.stringify(databaseState));
+                localStorage.setItem('df_catalog_manifest_v3', JSON.stringify(databaseState));
                 buildStorefrontCatalogUI();
             }
         }
@@ -681,17 +743,19 @@
             const valueInput = document.getElementById('global-qr-field').value.trim();
             if(valueInput) {
                 document.getElementById('checkoutQRDOMElement').src = valueInput;
-                localStorage.setItem('df_qr_string_override', valueInput);
-                alert("Fonepay Merchant QR reference string linked successfully.");
+                localStorage.setItem('df_qr_string_override_v3', valueInput);
+                alert("Fonepay Merchant QR link stored successfully.");
             } else {
-                alert("Please enter a valid URL path.");
+                alert("Please enter a valid link.");
             }
         }
 
         function appendItemToActiveBag(productId) {
             const referenceData = databaseState.find(p => p.id === productId);
             const menuNode = document.getElementById(`size-node-${productId}`);
-            const sizeSelectionString = menuNode ? menuNode.value : "M";
+            
+            // Assign 'No Size' if dropdown selection field doesn't exist for accessory categories
+            const sizeSelectionString = menuNode ? menuNode.value : "Standard Size";
 
             const exactDuplicatePointer = runningCart.findIndex(row => row.product.id === productId && row.size === sizeSelectionString);
 
@@ -717,7 +781,7 @@
         function renderActiveBagLines() {
             const stackContainer = document.getElementById('cartStack');
             if(runningCart.length === 0) {
-                stackContainer.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:2rem 0; font-size:0.9rem;">Your shopping bag is empty.</p>`;
+                stackContainer.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:1.5rem 0; font-size:0.85rem;">Your shopping bag is empty.</p>`;
                 return;
             }
 
@@ -727,12 +791,12 @@
                 elementRow.className = "cart-row-item";
                 elementRow.innerHTML = `
                     <div style="max-width:75%;">
-                        <div style="font-weight:600; font-size:0.85rem; line-height:1.2;">${lineItem.product.name}</div>
-                        <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.15rem;">Size: ${lineItem.size} | Qty: ${lineItem.qty}</div>
+                        <div style="font-weight:600; font-size:0.8rem; line-height:1.2;">${lineItem.product.name}</div>
+                        <div style="font-size:0.7rem; color:var(--text-muted); margin-top:0.1rem;">${lineItem.size} | Qty: ${lineItem.qty}</div>
                     </div>
-                    <div style="display:flex; align-items:center; gap:0.5rem;">
-                        <span style="font-size:0.85rem; font-weight:700;">Rs. ${parseInt(lineItem.product.price) * lineItem.qty}</span>
-                        <button type="button" onclick="removeBagItemQty(${idx})" style="background:none; border:none; color:red; cursor:pointer; font-weight:bold; font-size:1rem;">✕</button>
+                    <div style="display:flex; align-items:center; gap:0.4rem;">
+                        <span style="font-size:0.8rem; font-weight:700;">Rs. ${parseInt(lineItem.product.price) * lineItem.qty}</span>
+                        <button type="button" onclick="removeBagItemQty(${idx})" style="background:none; border:none; color:red; cursor:pointer; font-weight:bold; font-size:0.95rem;">✕</button>
                     </div>
                 `;
                 stackContainer.appendChild(elementRow);
@@ -781,7 +845,7 @@
 
             let plainTextManifest = "";
             runningCart.forEach((row, index) => {
-                plainTextManifest += `${index + 1}. ${row.product.name} (Size: ${row.size}) x${row.qty} [Rs. ${row.product.price} each]\n`;
+                plainTextManifest += `${index + 1}. ${row.product.name} (${row.size}) x${row.qty} [Rs. ${row.product.price} each]\n`;
             });
 
             const transitObject = {
@@ -794,23 +858,23 @@
             };
 
             emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, transitObject)
-                .then(() => console.log("Order logged over API backend records."))
-                .catch(err => console.error("API Logging issue:", err));
+                .then(() => console.log("Order logged successfully over API background channels."))
+                .catch(err => console.error("Email API routing error:", err));
 
             const encodeWhatsAppPayloadString = encodeURIComponent(
-                `🛍️ *DREAM FLAIR COLLECTION - CONFIRMED PURCHASE*\n\n` +
+                `🛍️ *DREAM FLAIR COLLECTION - NEW SHOPPING MANIFEST*\n\n` +
                 `👤 *Customer:* ${inputName}\n` +
                 `📱 *Phone:* ${inputPhone}\n` +
                 `🚚 *Method:* ${selectedShippingTypeString}\n` +
                 `📍 *Address:* ${inputAddress}\n\n` +
-                `📦 *Items List Summarized:*\n${plainTextManifest}\n` +
-                `💰 *TOTAL DUE PRICE:* Rs. ${totalSumVal}\n\n` +
-                `✅ _Please reply with your payment proof screenshot below._`
+                `📦 *Items List Order Summary:*\n${plainTextManifest}\n` +
+                `💰 *TOTAL DUE METRIC:* Rs. ${totalSumVal}\n\n` +
+                `✅ _Please drop your transaction validation code screenshot below._`
             );
 
             const studioWhatsAppRoute = `https://wa.me/9779815339830?text=${encodeWhatsAppPayloadString}`;
 
-            alert("Order Compiled! Click OK to open WhatsApp and send your confirmation payload directly.");
+            alert("Order compiled! Click OK to open WhatsApp and pass your verification payload directly.");
             
             runningCart = [];
             document.getElementById('form-name').value = '';
