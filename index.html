@@ -59,19 +59,30 @@
             letter-spacing: 4px;
         }
 
-        /* Hidden Secure Floating Admin Lock Button */
+        /* Highly Visible Floating Mobile-Friendly Admin Access Toggle Button */
         .admin-lock-anchor {
-            position: absolute;
-            top: 1.5rem;
+            position: fixed;
+            bottom: 1.5rem;
             right: 1.5rem;
-            background: none;
-            border: none;
-            font-size: 1.2rem;
+            background: var(--text-dark);
+            color: white;
+            font-size: 1.4rem;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            opacity: 0.4;
+            z-index: 99999;
+            box-shadow: 0 4px 16px rgba(224, 17, 95, 0.3);
+            border: 2px solid var(--primary);
             transition: var(--transition);
         }
-        .admin-lock-anchor:hover { opacity: 1; transform: scale(1.1); }
+        .admin-lock-anchor:hover { 
+            background: var(--primary-accent); 
+            transform: scale(1.1) rotate(45deg); 
+        }
 
         /* Creator Panel Ribbon UI */
         .creator-ribbon {
@@ -81,6 +92,8 @@
             padding: 1.25rem;
             text-align: center;
             font-family: sans-serif;
+            position: relative;
+            z-index: 9999;
         }
         body.admin-authenticated .creator-ribbon { display: block; }
 
@@ -135,12 +148,13 @@
 
         .card-visual-wrapper {
             width: 100%;
-            height: 300px;
-            background: #f3ece6;
+            height: 340px;
+            background: #fdfcfb;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
+            border-bottom: 1px solid var(--border);
         }
         .card-img { width: 100%; height: 100%; object-fit: cover; }
 
@@ -292,7 +306,7 @@
 
     <div class="creator-ribbon" id="adminPanel">
         <h3 style="color:#166534; font-size:1.2rem;">🛠️ Dream Flair Admin Terminal Enabled</h3>
-        <p style="font-size:0.85rem; color:#1e40af; margin-top:0.25rem;">You can now add any variation count sequentially, edit prices, or adjust the live payment QR configuration downstream.</p>
+        <p style="font-size:0.85rem; color:#1e40af; margin-top:0.25rem;">You can now add items, edit live prices, or delete sold out products instantly.</p>
         
         <div class="creator-grid-tools">
             <div style="background:white; padding:0.75rem; border-radius:6px; border:1px solid #bbf7d0; text-align:left;">
@@ -301,11 +315,11 @@
                 <select id="new-item-cat" class="editor-input" style="margin-bottom:0.4rem; width:100%; padding:0.4rem;">
                     <option value="Kurthi">Kurthi</option>
                     <option value="Saree">Saree</option>
-                    <option value="Earrings (Jhumka)">Earrings (Jhumka)</option>
+                    <option value="Jewelry Set">Jewelry Set</option>
                     <option value="Handbags">Handbags</option>
                 </select>
                 <input type="number" id="new-item-price" placeholder="Price (NPR)" class="editor-input" style="margin-bottom:0.4rem;">
-                <input type="text" id="new-item-img" placeholder="Unsplash / Direct Image Link" class="editor-input" value="https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=500" style="margin-bottom:0.4rem;">
+                <input type="text" id="new-item-img" placeholder="Paste image file url here" class="editor-input" style="margin-bottom:0.4rem;">
                 <button onclick="injectNewVariety()" style="background:#22c55e; color:white; border:none; padding:0.4rem; font-weight:bold; width:100%; border-radius:4px; cursor:pointer;">Push to Inventory Catalog</button>
             </div>
 
@@ -412,12 +426,12 @@
         const EMAILJS_SERVICE_ID = "service_ktes3uf";
         const EMAILJS_TEMPLATE_ID = "template_65abuf8";
 
-        // Hardcoded initialization collection sequence dataset array 
+        // UPDATED: Authentic inventory arrays matching uploaded boutique content items directly
         const foundationalCatalog = [
-            { id: "df_1", name: "Premium Georgette Kurthi", category: "Kurthi", price: "2850", image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=500" },
-            { id: "df_2", name: "Kanchipuram Silk Saree", category: "Saree", price: "9200", image: "https://images.unsplash.com/photo-1610030469668-93535c17b6b3?w=500" },
-            { id: "df_3", name: "Classic Bridal Jhumka Set", category: "Earrings (Jhumka)", price: "1850", image: "https://images.unsplash.com/photo-1635767798638-3e25273a8236?w=500" },
-            { id: "df_4", name: "Designer Chic Embroidered Clutch", category: "Handbags", price: "3400", image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500" }
+            { id: "df_real_1", name: "Premium Georgette Anarkali Kurthi", category: "Kurthi", price: "2450", image: "https://i.ibb.co/3ykbbyy/kurthi1.jpg" },
+            { id: "df_real_2", name: "Designer Floral Organza Saree Set", category: "Saree", price: "4200", image: "https://i.ibb.co/L9vCg7s/saree1.jpg" },
+            { id: "df_real_3", name: "Royal Kundan Choker Jewelry Set", category: "Jewelry Set", price: "1850", image: "https://i.ibb.co/RzyfMmM/jewelry1.jpg" },
+            { id: "df_real_4", name: "Luxury Embroidered Bridal Potli Clutch Bag", category: "Handbags", price: "1500", image: "https://i.ibb.co/xL2S0Xw/handbag1.jpg" }
         ];
 
         // App Reactive Memory States Engine Tracker
@@ -432,6 +446,12 @@
             const preservedCatalog = localStorage.getItem('df_collection_catalog_manifest');
             if (preservedCatalog) {
                 activeInventoryStore = JSON.parse(preservedCatalog);
+                
+                // Safety fix: If the user has old placeholder catalog in local storage, overwrite it with the new real item inventory
+                if (activeInventoryStore.length > 0 && activeInventoryStore[0].id.includes('df_1')) {
+                    activeInventoryStore = foundationalCatalog;
+                    localStorage.setItem('df_collection_catalog_manifest', JSON.stringify(foundationalCatalog));
+                }
             } else {
                 activeInventoryStore = foundationalCatalog;
                 localStorage.setItem('df_collection_catalog_manifest', JSON.stringify(foundationalCatalog));
@@ -459,6 +479,7 @@
             if (enteredToken === "0610") {
                 document.body.classList.add('admin-authenticated');
                 alert("Identity verified. Creator administration controls are now visible inline.");
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             } else if (enteredToken !== null) {
                 alert("Access Denied. Invalid Secure PIN Sequence.");
             }
@@ -479,11 +500,11 @@
                 cardElement.className = 'boutique-card';
                 cardElement.innerHTML = `
                     <div class="card-visual-wrapper">
-                        <img src="${product.image}" class="card-img" alt="${product.name}">
+                        <img src="${product.image}" class="card-img" alt="${product.name}" onerror="this.src='https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=500'">
                     </div>
                     <div class="card-details">
                         <span class="card-cat">${product.category}</span>
-                        <h3 class="brand-title" id="lbl-title-${product.id}" style="font-size:1.2rem; color:var(--text-dark); letter-spacing:0; text-align:left; font-weight:normal; margin:0;">${product.name}</h3>
+                        <h3 style="font-size:1.15rem; color:var(--text-dark); font-weight:normal; margin:0; font-family: inherit;">${product.name}</h3>
                         <div class="card-price">Rs. <span id="lbl-price-${product.id}">${product.price}</span></div>
                         
                         <div class="card-sizes-row">
@@ -549,6 +570,7 @@
             
             document.getElementById('new-item-name').value = '';
             document.getElementById('new-item-price').value = '';
+            document.getElementById('new-item-img').value = '';
             alert(`"${name}" pushed successfully into live tracking matrix memory!`);
         }
 
@@ -607,10 +629,10 @@
             redrawCartInterface();
             recalculateCartTotals();
 
-            // SENSORY OPTIMIZATION: Alert the user that the action succeeded and focus on checkout details
+            // Notify customer that item is added
             alert(`✨ "${coreItemData.name}" (Size ${determinedSize}) added to your bag!`);
             
-            // Automatically scroll them down to the entry form box area smoothly
+            // Auto scroll down to registration card details layout form safely
             document.getElementById('checkout-terminal-panel').scrollIntoView({ behavior: 'smooth' });
         }
 
