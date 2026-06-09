@@ -6,763 +6,820 @@
     <title>Dream Flair Collection | Dharan</title>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <style>
-        /* Bright Elegant Boutique Color Palette */
         :root {
-            --bg-main: #fbf9f6;
+            --bg-main: #f9f6f0;
             --bg-card: #ffffff;
-            --primary: #d4af37; /* Warm Gold tint */
-            --primary-accent: #e0115f; /* Deep Elegant Ruby Rose */
-            --text-dark: #231f20;
-            --text-muted: #6b6363;
-            --border: #ebdcd0;
-            --radius-lg: 16px;
-            --radius-sm: 8px;
-            --shadow: 0 12px 40px rgba(224, 17, 95, 0.04);
-            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --primary: #b89742; 
+            --accent: #111111; 
+            --accent-pink: #d6336c;
+            --text-main: #1a1a1a;
+            --text-muted: #767676;
+            --border-light: #e8e2d9;
+            --radius-premium: 12px;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+            --shadow-md: 0 10px 30px rgba(0,0,0,0.08);
+            --transition: all 0.25s ease-in-out;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Playfair Display', 'Segoe UI', system-ui, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
             background-color: var(--bg-main);
-            color: var(--text-dark);
-            overflow-x: hidden;
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Top Bar Branding Navigation */
+        /* Administrative Terminal Cover */
+        .admin-dashboard {
+            display: none;
+            background: #ffffff;
+            border-bottom: 2px solid var(--primary);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            z-index: 100000;
+        }
+        body.admin-authenticated .admin-dashboard { display: block; }
+
+        .admin-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .admin-card {
+            background: #fafafa;
+            border: 1px solid var(--border-light);
+            padding: 1rem;
+            border-radius: var(--radius-premium);
+        }
+
+        .admin-input {
+            width: 100%;
+            padding: 0.6rem;
+            margin: 0.4rem 0 0.8rem 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        .admin-btn {
+            width: 100%;
+            padding: 0.6rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+        }
+
+        /* Shopify-Style Premium Header Navigation */
         header {
             background: var(--bg-card);
-            padding: 2.5rem 1.5rem;
+            padding: 1.5rem;
             text-align: center;
-            border-bottom: 1px solid var(--border);
-            box-shadow: var(--shadow);
-            position: relative;
+            border-bottom: 1px solid var(--border-light);
+            box-shadow: var(--shadow-sm);
         }
 
-        .brand-title {
-            font-size: 2.8rem;
-            color: var(--primary-accent);
+        .brand-logo {
+            font-size: 2rem;
             font-weight: 800;
-            letter-spacing: 1px;
-            margin-bottom: 0.25rem;
-        }
-
-        .brand-subtitle {
-            font-size: 0.95rem;
-            color: var(--text-muted);
+            letter-spacing: -0.5px;
+            color: var(--accent);
             text-transform: uppercase;
-            letter-spacing: 4px;
         }
 
-        /* Highly Visible Floating Mobile-Friendly Admin Access Toggle Button */
-        .admin-lock-anchor {
-            position: fixed;
-            bottom: 1.5rem;
-            right: 1.5rem;
-            background: var(--text-dark);
-            color: white;
-            font-size: 1.4rem;
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
+        .brand-location {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            margin-top: 0.2rem;
+            text-transform: uppercase;
+        }
+
+        /* Clean Amazon/Shopify Styled Category Tabs Bar */
+        .category-navigation-bar {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-light);
             display: flex;
-            align-items: center;
             justify-content: center;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding: 0.75rem 1rem;
+            white-space: nowrap;
+        }
+
+        .category-tab {
+            background: none;
+            border: 1px solid transparent;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            border-radius: 20px;
             cursor: pointer;
-            z-index: 99999;
-            box-shadow: 0 4px 16px rgba(224, 17, 95, 0.3);
-            border: 2px solid var(--primary);
             transition: var(--transition);
         }
-        .admin-lock-anchor:hover { 
-            background: var(--primary-accent); 
-            transform: scale(1.1) rotate(45deg); 
+
+        .category-tab.active-tab, .category-tab:hover {
+            background: var(--accent);
+            color: #ffffff;
         }
 
-        /* Creator Panel Ribbon UI */
-        .creator-ribbon {
-            display: none;
-            background: #f0fdf4;
-            border-bottom: 3px solid #22c55e;
-            padding: 1.25rem;
-            text-align: center;
-            font-family: sans-serif;
-            position: relative;
-            z-index: 9999;
-        }
-        body.admin-authenticated .creator-ribbon { display: block; }
-
-        .creator-grid-tools {
-            max-width: 1200px;
-            margin: 1rem auto 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 0.75rem;
-        }
-
-        /* Standard Content Container Layout */
-        .app-frame {
-            max-width: 1280px;
-            margin: 2rem auto;
-            padding: 0 1.5rem;
+        /* Main Structural Split Core Panel Layout Grid */
+        .marketplace-container {
+            max-width: 1300px;
+            margin: 1.5rem auto;
+            padding: 0 1rem;
             display: grid;
             grid-template-columns: 1fr;
-            gap: 3rem;
-        }
-
-        @media (min-width: 992px) {
-            .app-frame { grid-template-columns: 2fr 1fr; }
-        }
-
-        .catalog-headline {
-            font-size: 1.75rem;
-            margin-bottom: 1.5rem;
-            border-left: 5px solid var(--primary-accent);
-            padding-left: 0.75rem;
-        }
-
-        /* Store Inventory Product Grid System */
-        .store-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
             gap: 2rem;
         }
 
-        .boutique-card {
+        @media (min-width: 992px) {
+            .marketplace-container {
+                grid-template-columns: 1.6fr 1fr;
+            }
+        }
+
+        /* Compact Professional Dual-Column/Row Layout */
+        .catalog-display-shelf {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        @media (min-width: 600px) {
+            .catalog-display-shelf {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            }
+        }
+
+        .premium-product-card {
             background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-premium);
             overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
             display: flex;
             flex-direction: column;
             position: relative;
+            transition: var(--transition);
         }
-        .boutique-card:hover { transform: translateY(-6px); border-color: var(--primary); }
 
-        .card-visual-wrapper {
+        .premium-product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .product-image-container {
             width: 100%;
-            height: 340px;
-            background: #fdfcfb;
+            padding-top: 125%; /* Fixed professional aspect ratio */
+            position: relative;
+            background: #f7f7f7;
+        }
+
+        .product-image-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-meta-details {
+            padding: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            flex-grow: 1;
+        }
+
+        .product-tag {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--primary);
+            letter-spacing: 0.5px;
+        }
+
+        .product-name-heading {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--accent);
+            line-height: 1.3;
+            height: 2.6rem;
             overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .product-pricing-node {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-top: 0.2rem;
+        }
+
+        .product-size-selector-row {
             display: flex;
             align-items: center;
-            justify-content: center;
-            border-bottom: 1px solid var(--border);
+            gap: 0.4rem;
+            margin-top: 0.4rem;
         }
-        .card-img { width: 100%; height: 100%; object-fit: cover; }
 
-        .card-details { padding: 1.25rem; flex-grow: 1; display: flex; flex-direction: column; gap: 0.5rem; }
-        .card-cat { font-size: 0.75rem; font-weight: bold; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
-        .card-title { font-size: 1.2rem; color: var(--text-dark); }
-        .card-price { font-size: 1.3rem; font-weight: bold; color: var(--primary-accent); }
-
-        /* Size Matrix Badges */
-        .card-sizes-row { display: flex; gap: 0.35rem; margin: 0.25rem 0; }
-        .size-pill { font-size: 0.75rem; padding: 0.2rem 0.5rem; border: 1px solid var(--border); border-radius: 4px; font-weight: bold; }
-
-        /* Context Interactive Buttons */
-        .action-cta {
+        .product-size-dropdown {
             width: 100%;
-            background: var(--text-dark);
-            color: #fff;
+            padding: 0.35rem;
+            font-size: 0.8rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-light);
+            background: #fff;
+            font-weight: 600;
+        }
+
+        .add-to-bag-cta {
+            width: 100%;
+            background: var(--accent);
+            color: #ffffff;
             border: none;
-            padding: 0.75rem;
-            border-radius: var(--radius-sm);
-            font-weight: bold;
+            padding: 0.65rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+            border-radius: 8px;
             cursor: pointer;
             transition: var(--transition);
             margin-top: auto;
         }
-        .action-cta:hover { background: var(--primary-accent); }
 
-        /* Dynamic Input Controls inside Admin Mode */
-        .admin-inline-editor {
+        .add-to-bag-cta:hover { background: #333333; }
+
+        /* Shopify Inline Admin Layout Controls */
+        .inline-management-drawer {
             display: none;
-            background: #fff;
-            border-top: 2px dashed #22c55e;
-            padding: 1rem;
-            font-family: sans-serif;
-            font-size: 0.85rem;
+            background: #fffdf9;
+            border-top: 1px dashed var(--primary);
+            padding: 0.75rem;
+            font-size: 0.8rem;
         }
-        body.admin-authenticated .admin-inline-editor { display: block; }
+        body.admin-authenticated .inline-management-drawer { display: block; }
 
-        .editor-input {
-            width: 100%;
-            padding: 0.4rem;
-            margin: 0.25rem 0 0.75rem 0;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-        }
-
-        .btn-destructive { background: #ef4444; color: white; border: none; padding: 0.4rem; border-radius: 4px; width: 100%; cursor: pointer; margin-top: 0.25rem; }
-
-        /* Interactive Checkout Cart Terminal */
-        .sticky-checkout-panel {
+        /* Premium Cart Terminal Side Panel Window */
+        .checkout-terminal-dock {
             background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 2rem;
-            box-shadow: var(--shadow);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-premium);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
             height: fit-content;
             position: sticky;
-            top: 2rem;
+            top: 1.5rem;
         }
 
-        .cart-title-row { font-size: 1.4rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--bg-main); }
-        
-        .cart-scroll-node { max-height: 240px; overflow-y: auto; margin-bottom: 1.5rem; }
-        .cart-line-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid var(--bg-main); font-size: 0.95rem; }
-
-        /* Form Layout Styles */
-        .input-block { margin-bottom: 1.25rem; }
-        .input-block label { display: block; font-size: 0.85rem; font-weight: bold; margin-bottom: 0.4rem; color: var(--text-dark); }
-        .ui-field { width: 100%; padding: 0.75rem; border: 1px solid var(--border); background: var(--bg-main); border-radius: var(--radius-sm); outline: none; font-size: 0.95rem; }
-        .ui-field:focus { border-color: var(--primary-accent); background: #fff; }
-
-        .radio-delivery-box {
-            display: flex;
-            gap: 1rem;
-            margin-top: 0.5rem;
+        .dock-header {
+            font-size: 1.25rem;
+            font-weight: 700;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1rem;
         }
-        .delivery-label-card {
-            flex: 1;
-            border: 1px solid var(--border);
-            padding: 0.75rem;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
+
+        .cart-line-items-stack {
+            max-height: 280px;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+        }
+
+        .cart-row-item {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            font-weight: bold;
-            transition: var(--transition);
-            background: white;
-        }
-        .delivery-label-card input { margin-bottom: 0.25rem; }
-        .delivery-label-card.active-choice {
-            border-color: var(--primary-accent);
-            background: rgba(224, 17, 95, 0.02);
-            color: var(--primary-accent);
+            padding: 0.6rem 0;
+            border-bottom: 1px solid #f5f5f5;
         }
 
-        /* Embedded Pre-Payment Portal UI */
-        .qr-display-box {
-            background: #fffbf0;
-            border: 1px dashed var(--primary);
-            padding: 1.25rem;
-            border-radius: var(--radius-sm);
+        .form-input-group { margin-bottom: 1rem; }
+        .form-input-group label { display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.3rem; text-transform: uppercase; }
+        .checkout-field-element { width: 100%; padding: 0.7rem; border: 1px solid var(--border-light); border-radius: 8px; outline: none; font-size: 0.9rem; }
+        .checkout-field-element:focus { border-color: var(--accent); }
+
+        .shipping-matrix-grid { display: flex; gap: 0.75rem; margin-top: 0.4rem; }
+        .shipping-card-option {
+            flex: 1;
+            border: 1px solid var(--border-light);
+            padding: 0.75rem;
+            border-radius: 8px;
+            cursor: pointer;
             text-align: center;
-            margin: 1.5rem 0;
+            font-weight: 600;
+            background: white;
+            transition: var(--transition);
         }
-        .qr-img-wrapper {
-            width: 160px;
-            height: 160px;
-            background: #f3ece6;
+        .shipping-card-option.selected-shipping {
+            border-color: var(--accent);
+            background: #fafafa;
+        }
+
+        /* Modernized Secure QR Checkout Asset Container */
+        .bank-qr-checkout-wrapper {
+            background: #faf9f6;
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            margin: 1.25rem 0;
+        }
+
+        .qr-graphic-shield {
+            width: 150px;
+            height: 150px;
+            background: #ffffff;
+            border: 1px solid var(--border-light);
             margin: 0.5rem auto;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
-            border: 1px solid var(--border);
+            padding: 0.5rem;
+            border-radius: 6px;
         }
 
-        .btn-order-execution {
+        .complete-checkout-btn {
             width: 100%;
-            background: var(--primary-accent);
-            color: white;
+            background: var(--accent-pink);
+            color: #ffffff;
             border: none;
-            padding: 1rem;
-            border-radius: var(--radius-sm);
-            font-size: 1.1rem;
-            font-weight: bold;
+            padding: 0.9rem;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 8px;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(224, 17, 95, 0.2);
+            box-shadow: 0 4px 12px rgba(214, 51, 108, 0.15);
             transition: var(--transition);
         }
-        .btn-order-execution:hover { background: #c20e50; transform: translateY(-1px); }
+        .complete-checkout-btn:hover { background: #bd265b; }
 
-        /* Store Footer Baseline */
-        footer {
-            background: #1a1717;
-            color: white;
-            padding: 3rem 1.5rem;
-            text-align: center;
-            margin-top: 6rem;
-            border-top: 3px solid var(--primary);
+        /* Floating Admin Control Asset Anchor Button */
+        .floating-lock-icon {
+            position: fixed;
+            bottom: 1.25rem;
+            right: 1.25rem;
+            background: var(--accent);
+            color: #ffffff;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            font-size: 1.25rem;
+            cursor: pointer;
+            z-index: 999999;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
-        footer p { margin: 0.5rem 0; color: #b5aeb0; }
-        .footer-call { color: #fff; font-weight: bold; font-size: 1.2rem; text-decoration: none; }
+
+        footer {
+            background: #ffffff;
+            border-top: 1px solid var(--border-light);
+            padding: 2.5rem 1rem;
+            text-align: center;
+            margin-top: 4rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
     </style>
 </head>
 <body>
 
-    <button class="admin-lock-anchor" onclick="challengeOwnerCredentials()">⚙️</button>
+    <button class="floating-lock-icon" onclick="openSystemTerminal()">⚙️</button>
 
-    <div class="creator-ribbon" id="adminPanel">
-        <h3 style="color:#166534; font-size:1.2rem;">🛠️ Dream Flair Admin Terminal Enabled</h3>
-        <p style="font-size:0.85rem; color:#1e40af; margin-top:0.25rem;">You can now add items, edit live prices, or delete sold out products instantly.</p>
-        
-        <div class="creator-grid-tools">
-            <div style="background:white; padding:0.75rem; border-radius:6px; border:1px solid #bbf7d0; text-align:left;">
-                <strong style="font-size:0.8rem; display:block; margin-bottom:0.25rem;">Bulk Append Variation Asset</strong>
-                <input type="text" id="new-item-name" placeholder="Item Title (e.g., Pure Chiffon Saree)" class="editor-input" style="margin-bottom:0.4rem;">
-                <select id="new-item-cat" class="editor-input" style="margin-bottom:0.4rem; width:100%; padding:0.4rem;">
+    <div class="admin-dashboard" id="adminConsole">
+        <h2 style="margin-bottom:1rem; font-size:1.2rem; color:var(--accent);">⚙️ Admin Dashboard Terminal</h2>
+        <div class="admin-grid">
+            <div class="admin-card">
+                <h4 style="margin-bottom:0.5rem;">Add New Product Asset</h4>
+                <input type="text" id="add-title" class="admin-input" placeholder="Product Title">
+                <select id="add-category" class="admin-input">
                     <option value="Kurthi">Kurthi</option>
                     <option value="Saree">Saree</option>
                     <option value="Jewelry Set">Jewelry Set</option>
                     <option value="Handbags">Handbags</option>
                 </select>
-                <input type="number" id="new-item-price" placeholder="Price (NPR)" class="editor-input" style="margin-bottom:0.4rem;">
-                <input type="text" id="new-item-img" placeholder="Paste image file url here" class="editor-input" style="margin-bottom:0.4rem;">
-                <button onclick="injectNewVariety()" style="background:#22c55e; color:white; border:none; padding:0.4rem; font-weight:bold; width:100%; border-radius:4px; cursor:pointer;">Push to Inventory Catalog</button>
+                <input type="number" id="add-price" class="admin-input" placeholder="Price (NPR)">
+                <input type="text" id="add-image" class="admin-input" placeholder="Direct Image URL">
+                <button onclick="commitNewAsset()" class="admin-btn" style="background:#2b8a3e;">Add Product</button>
             </div>
-
-            <div style="background:white; padding:0.75rem; border-radius:6px; border:1px solid #bbf7d0; text-align:left;">
-                <strong style="font-size:0.8rem; display:block; margin-bottom:0.25rem;">Modify Store Payment QR Image</strong>
-                <input type="text" id="qr-url-modifier" class="editor-input" placeholder="Paste image file link url here">
-                <button onclick="updateStoreQR()" style="background:#0284c7; color:white; border:none; padding:0.4rem; font-weight:bold; width:100%; border-radius:4px; cursor:pointer;">Update QR Manifest</button>
+            <div class="admin-card">
+                <h4 style="margin-bottom:0.5rem;">Update Fonepay QR Code</h4>
+                <input type="text" id="global-qr-field" class="admin-input" placeholder="Paste Direct Image URL for Bank QR">
+                <button onclick="commitQRManifestUpdate()" class="admin-btn" style="background:#1c7ed6;">Save QR Code Link</button>
             </div>
         </div>
-        <button onclick="logoutAdmin()" style="margin-top:1rem; background:#64748b; color:white; padding:0.25rem 0.75rem; border:none; border-radius:4px; cursor:pointer;">Exit Admin Mode</button>
+        <button onclick="closeSystemTerminal()" style="margin-top:1rem; padding:0.4rem 1rem; border-radius:4px; border:1px solid #ccc; cursor:pointer; font-weight:600;">Exit Dashboard</button>
     </div>
 
     <header>
-        <h1 class="brand-title">Dream Flair Collection</h1>
-        <div class="brand-subtitle">Gautam Path, Dharan</div>
+        <div class="brand-logo">Dream Flair Collection</div>
+        <div class="brand-location">Gautam Path, Dharan</div>
     </header>
 
-    <div class="app-frame">
+    <div class="category-navigation-bar">
+        <button class="category-tab active-tab" onclick="filterCatalogSelection('All', this)">All Items</button>
+        <button class="category-tab" onclick="filterCatalogSelection('Kurthi', this)">Kurthis</button>
+        <button class="category-tab" onclick="filterCatalogSelection('Saree', this)">Sarees</button>
+        <button class="category-tab" onclick="filterCatalogSelection('Jewelry Set', this)">Jewelry</button>
+        <button class="category-tab" onclick="filterCatalogSelection('Handbags', this)">Handbags</button>
+    </div>
+
+    <div class="marketplace-container">
         
         <div>
-            <h2 class="catalog-headline">Our Boutique Collection</h2>
-            <div class="store-grid" id="catalog-target-grid">
-                </div>
+            <div class="catalog-display-shelf" id="catalogDisplayShelf"></div>
         </div>
 
-        <div class="sticky-checkout-panel" id="checkout-terminal-panel">
-            <h3 class="cart-title-row">🛒 Your Selected Cart Items</h3>
+        <div class="checkout-terminal-dock">
+            <div class="dock-header">Bag Summary</div>
             
-            <div class="cart-scroll-node" id="cart-items-container">
-                <p style="color: var(--text-muted); font-size:0.9rem; text-align:center; padding:1rem 0;">Your cart is empty. Click an item to add selections.</p>
+            <div class="cart-line-items-stack" id="cartStack">
+                <p style="text-align:center; color:var(--text-muted); padding:2rem 0; font-size:0.9rem;">Your shopping bag is empty.</p>
             </div>
 
-            <form id="checkout-execution-form" onsubmit="handleOrderSubmission(event)">
-                <div class="input-block">
+            <form onsubmit="executeOrderPayload(event)">
+                <div class="form-input-group">
                     <label>Full Name</label>
-                    <input type="text" class="ui-field" id="cust-name" required placeholder="Your Name">
+                    <input type="text" id="form-name" class="checkout-field-element" required placeholder="John Doe">
+                </div>
+                <div class="form-input-group">
+                    <label>Mobile Contact Number</label>
+                    <input type="tel" id="form-phone" class="checkout-field-element" required placeholder="98XXXXXXXX">
+                </div>
+                <div class="form-input-group">
+                    <label>Detailed Delivery Address</label>
+                    <input type="text" id="form-address" class="checkout-field-element" required placeholder="City, Tole, Landmark Name">
                 </div>
 
-                <div class="input-block">
-                    <label>Contact Mobile Number</label>
-                    <input type="tel" class="ui-field" id="cust-phone" required placeholder="98XXXXXXXX">
-                </div>
-
-                <div class="input-block">
-                    <label>Detailed Shipping Address (All Over Nepal)</label>
-                    <input type="text" class="ui-field" id="cust-address" required placeholder="District, City, Tole Name">
-                </div>
-
-                <div class="input-block">
-                    <label>Preferred Delivery Strategy</label>
-                    <div class="radio-delivery-box">
-                        <div class="delivery-label-card active-choice" id="card-office" onclick="switchDeliveryStrategy('office', 180)">
-                            <input type="radio" name="delivery_type" value="Office Delivery" checked style="pointer-events:none;">
-                            <span>Office Delivery</span>
-                            <span style="font-size:0.8rem; color:var(--text-muted); font-weight:normal;">Rs. 180</span>
+                <div class="form-input-group">
+                    <label>Delivery Option</label>
+                    <div class="shipping-matrix-grid">
+                        <div class="shipping-card-option selected-shipping" id="ship-office" onclick="toggleShippingStrategy('office', 180)">
+                            <div style="font-size:0.9rem;">Office Delivery</div>
+                            <div style="font-size:0.8rem; color:var(--text-muted); margin-top:0.1rem;">Rs. 180</div>
                         </div>
-                        <div class="delivery-label-card" id="card-home" onclick="switchDeliveryStrategy('home', 220)">
-                            <input type="radio" name="delivery_type" value="Home Delivery" style="pointer-events:none;">
-                            <span>Home Delivery</span>
-                            <span style="font-size:0.8rem; color:var(--text-muted); font-weight:normal;">Rs. 220</span>
+                        <div class="shipping-card-option" id="ship-home" onclick="toggleShippingStrategy('home', 220)">
+                            <div style="font-size:0.9rem;">Home Delivery</div>
+                            <div style="font-size:0.8rem; color:var(--text-muted); margin-top:0.1rem;">Rs. 220</div>
                         </div>
                     </div>
                 </div>
 
-                <div class="qr-display-box">
-                    <strong style="font-size:0.9rem; display:block; color:var(--primary-accent);">✨ Fonepay / Bank Pre-Payment System</strong>
-                    <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.2rem;">Scan the merchant QR below to finalize transaction validation:</p>
-                    <div class="qr-img-wrapper">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=DreamFlairCollectionDharan" id="merchant-qr-element" style="width:100%; height:100%; object-fit:contain;" alt="Merchant Bank QR Code">
+                <div class="bank-qr-checkout-wrapper">
+                    <div style="font-size:0.85rem; font-weight:700; color:var(--accent);">Scan via Mobile Banking App</div>
+                    <div class="qr-graphic-shield">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=DreamFlairCollectionDharan" id="checkoutQRDOMElement" style="width:100%; height:100%; object-fit:contain;" alt="Bank Processing Merchant QR Code Profile">
                     </div>
-                    <span style="font-size:0.7rem; color:#b45309; background:#fef3c7; padding:0.2rem 0.5rem; border-radius:4px; font-weight:bold; display:inline-block; margin-top:0.25rem;">Scan & Pay to Confirm Placement</span>
+                    <div style="font-size:0.75rem; color:var(--text-muted);">Please attach payment verification screenshot in WhatsApp chat after submittal.</div>
                 </div>
 
-                <div style="margin: 1.5rem 0; border-top:1px dashed var(--border); padding-top:1rem; display:flex; flex-direction:column; gap:0.4rem;">
-                    <div style="display:flex; justify-content:space-between; font-size:0.9rem; color:var(--text-muted);">
-                        <span>Items Subtotal:</span>
-                        <span>Rs. <span id="metric-subtotal">0</span></span>
+                <div style="margin:1rem 0; font-size:0.9rem; display:flex; flex-direction:column; gap:0.35rem;">
+                    <div style="display:flex; justify-content:space-between; color:var(--text-muted);">
+                        <span>Subtotal:</span><span>Rs. <span id="summarySubtotal">0</span></span>
                     </div>
-                    <div style="display:flex; justify-content:space-between; font-size:0.9rem; color:var(--text-muted);">
-                        <span>Delivery Logistics Fee:</span>
-                        <span>Rs. <span id="metric-shipping">180</span></span>
+                    <div style="display:flex; justify-content:space-between; color:var(--text-muted);">
+                        <span>Shipping:</span><span>Rs. <span id="summaryShipping">180</span></span>
                     </div>
-                    <div style="display:flex; justify-content:space-between; font-size:1.3rem; font-weight:bold; color:var(--primary-accent); margin-top:0.2rem;">
-                        <span>Total Due:</span>
-                        <span>Rs. <span id="metric-grandtotal">0</span></span>
+                    <div style="display:flex; justify-content:space-between; font-weight:700; font-size:1.15rem; color:var(--accent); border-top:1px dashed #e8e2d9; padding-top:0.5rem; margin-top:0.25rem;">
+                        <span>Total Due:</span><span>Rs. <span id="summaryGrandTotal">0</span></span>
                     </div>
                 </div>
 
-                <button type="submit" class="btn-order-execution">Lock Order & Send Email Alerts</button>
+                <button type="submit" class="complete-checkout-btn">Complete & Place Order</button>
             </form>
         </div>
-
     </div>
 
     <footer>
         <p>📍 Location: Gautam Path, Dharan, Nepal</p>
-        <p>Dream Flair Collection Studio — Luxury Attire Transformed</p>
-        <a href="tel:+9779815339830" class="footer-call">📞 +977-9815339830</a>
+        <p style="margin-top:0.3rem; font-size:0.8rem;">© 2026 Dream Flair Collection. All Rights Reserved.</p>
     </footer>
 
     <script>
-        // CRITICAL EMAILJS CREDENTIAL KEYS ASSIGNMENT HOOKS
         const EMAILJS_PUBLIC_KEY = "i6cvg7k3f9KKBjDwW"; 
         const EMAILJS_SERVICE_ID = "service_ktes3uf";
         const EMAILJS_TEMPLATE_ID = "template_65abuf8";
 
-        // UPDATED: Authentic inventory arrays matching uploaded boutique content items directly
         const foundationalCatalog = [
-            { id: "df_real_1", name: "Premium Georgette Anarkali Kurthi", category: "Kurthi", price: "2450", image: "https://i.ibb.co/3ykbbyy/kurthi1.jpg" },
-            { id: "df_real_2", name: "Designer Floral Organza Saree Set", category: "Saree", price: "4200", image: "https://i.ibb.co/L9vCg7s/saree1.jpg" },
-            { id: "df_real_3", name: "Royal Kundan Choker Jewelry Set", category: "Jewelry Set", price: "1850", image: "https://i.ibb.co/RzyfMmM/jewelry1.jpg" },
-            { id: "df_real_4", name: "Luxury Embroidered Bridal Potli Clutch Bag", category: "Handbags", price: "1500", image: "https://i.ibb.co/xL2S0Xw/handbag1.jpg" }
+            { id: "asset_df_1", name: "Premium Georgette Anarkali Kurthi Set", category: "Kurthi", price: "2450", image: "https://i.ibb.co/3ykbbyy/kurthi1.jpg" },
+            { id: "asset_df_2", name: "Designer Floral Organza Saree Collection", category: "Saree", price: "4200", image: "https://i.ibb.co/L9vCg7s/saree1.jpg" },
+            { id: "asset_df_3", name: "Royal Kundan Gold Choker Set", category: "Jewelry Set", price: "1850", image: "https://i.ibb.co/RzyfMmM/jewelry1.jpg" },
+            { id: "asset_df_4", name: "Luxury Embroidered Potli Bag Portfolio", category: "Handbags", price: "1500", image: "https://i.ibb.co/xL2S0Xw/handbag1.jpg" }
         ];
 
-        // App Reactive Memory States Engine Tracker
-        let activeInventoryStore = [];
-        let runningCartState = [];
-        let configuredDeliveryFee = 180;
-        let selectedDeliveryStrategy = "Office Delivery";
+        let databaseState = [];
+        let runningCart = [];
+        let runningShippingCost = 180;
+        let selectedShippingTypeString = "Office Delivery";
+        let targetedCategoryFilter = "All";
 
-        // Bootstrap loader event hook
         window.addEventListener('DOMContentLoaded', () => {
-            // Setup local state persistence buffers
-            const preservedCatalog = localStorage.getItem('df_collection_catalog_manifest');
-            if (preservedCatalog) {
-                activeInventoryStore = JSON.parse(preservedCatalog);
-                
-                // Safety fix: If the user has old placeholder catalog in local storage, overwrite it with the new real item inventory
-                if (activeInventoryStore.length > 0 && activeInventoryStore[0].id.includes('df_1')) {
-                    activeInventoryStore = foundationalCatalog;
-                    localStorage.setItem('df_collection_catalog_manifest', JSON.stringify(foundationalCatalog));
+            const memoryManifest = localStorage.getItem('df_catalog_manifest_v2');
+            if (memoryManifest) {
+                databaseState = JSON.parse(memoryManifest);
+                if (databaseState.length > 0 && !databaseState[0].id.startsWith('asset_df_')) {
+                    databaseState = foundationalCatalog;
+                    localStorage.setItem('df_catalog_manifest_v2', JSON.stringify(foundationalCatalog));
                 }
             } else {
-                activeInventoryStore = foundationalCatalog;
-                localStorage.setItem('df_collection_catalog_manifest', JSON.stringify(foundationalCatalog));
+                databaseState = foundationalCatalog;
+                localStorage.setItem('df_catalog_manifest_v2', JSON.stringify(foundationalCatalog));
             }
 
-            // Sync structural QR setups across boots
-            const preservedQRUrl = localStorage.getItem('df_boutique_merchant_qr_string');
-            if (preservedQRUrl) {
-                document.getElementById('merchant-qr-element').src = preservedQRUrl;
-                document.getElementById('qr-url-modifier').value = preservedQRUrl;
+            const activeQRURL = localStorage.getItem('df_qr_string_override');
+            if(activeQRURL) {
+                document.getElementById('checkoutQRDOMElement').src = activeQRURL;
+                document.getElementById('global-qr-field').value = activeQRURL;
             }
 
-            // Initialize API framework execution layer engine parameters
             if(typeof emailjs !== 'undefined') {
                 emailjs.init(EMAILJS_PUBLIC_KEY);
             }
 
-            renderStorefrontCatalog();
-            recalculateCartTotals();
+            buildStorefrontCatalogUI();
+            updateLiveFinancialMetrics();
         });
 
-        // Prompt Secure Pin Validation Logic Trigger
-        function challengeOwnerCredentials() {
-            const enteredToken = prompt("🔑 Access Warning: Enter Owner 4-Digit Security PIN to activate editing functions:");
-            if (enteredToken === "0610") {
+        function openSystemTerminal() {
+            const entryKeyChallenge = prompt("Enter 4-Digit Secure Verification Code:");
+            if(entryKeyChallenge === "0610") {
                 document.body.classList.add('admin-authenticated');
-                alert("Identity verified. Creator administration controls are now visible inline.");
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-            } else if (enteredToken !== null) {
-                alert("Access Denied. Invalid Secure PIN Sequence.");
+            } else if(entryKeyChallenge !== null) {
+                alert("Incorrect PIN Code Security Rejection.");
             }
         }
 
-        function logoutAdmin() {
+        function closeSystemTerminal() {
             document.body.classList.remove('admin-authenticated');
-            alert("Admin mode disabled.");
         }
 
-        // Catalog UI Array Layout Redraw Engine
-        function renderStorefrontCatalog() {
-            const container = document.getElementById('catalog-target-grid');
-            container.innerHTML = '';
+        function buildStorefrontCatalogUI() {
+            const displayShelfTarget = document.getElementById('catalogDisplayShelf');
+            displayShelfTarget.innerHTML = '';
 
-            activeInventoryStore.forEach(product => {
-                const cardElement = document.createElement('div');
-                cardElement.className = 'boutique-card';
-                cardElement.innerHTML = `
-                    <div class="card-visual-wrapper">
-                        <img src="${product.image}" class="card-img" alt="${product.name}" onerror="this.src='https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=500'">
-                    </div>
-                    <div class="card-details">
-                        <span class="card-cat">${product.category}</span>
-                        <h3 style="font-size:1.15rem; color:var(--text-dark); font-weight:normal; margin:0; font-family: inherit;">${product.name}</h3>
-                        <div class="card-price">Rs. <span id="lbl-price-${product.id}">${product.price}</span></div>
-                        
-                        <div class="card-sizes-row">
-                            <span class="size-pill">M</span><span class="size-pill">L</span>
-                            <span class="size-pill">XL</span><span class="size-pill">XXL</span>
-                        </div>
+            const filteredSet = targetedCategoryFilter === "All" ? databaseState : databaseState.filter(item => item.category === targetedCategoryFilter);
 
-                        <div style="margin-bottom:0.5rem; display:flex; align-items:center; gap:0.4rem;">
-                            <span style="font-size:0.75rem; font-weight:bold; color:var(--text-muted);">Size:</span>
-                            <select id="size-selector-${product.id}" style="padding:0.2rem; font-size:0.8rem; border-radius:4px; border:1px solid var(--border);">
-                                <option value="M">M</option><option value="L">L</option>
-                                <option value="XL">XL</option><option value="XXL">XXL</option>
-                            </select>
-                        </div>
-
-                        <button class="action-cta" onclick="appendItemToCart('${product.id}')">Add To Bag</button>
-                    </div>
-
-                    <div class="admin-inline-editor">
-                        <label>Modify Label</label>
-                        <input type="text" class="editor-input" id="edit-title-${product.id}" value="${product.name}">
-                        
-                        <label>Modify Price (Rs.)</label>
-                        <input type="number" class="editor-input" id="edit-price-${product.id}" value="${product.price}">
-                        
-                        <label>Modify Image URL Source</label>
-                        <input type="text" class="editor-input" id="edit-image-${product.id}" value="${product.image}">
-                        
-                        <div style="display:flex; gap:0.5rem;">
-                            <button onclick="commitProductEdits('${product.id}')" style="background:#22c55e; color:white; font-weight:bold; border:none; padding:0.4rem; border-radius:4px; cursor:pointer; flex:2;">Save Changes</button>
-                            <button onclick="purgeCatalogItem('${product.id}')" class="btn-destructive" style="flex:1; margin:0; padding:0.4rem;">Delete</button>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(cardElement);
-            });
-        }
-
-        // Creator Core Mechanics: Add Unlimited Varieties Inline simultaneously
-        function injectNewVariety() {
-            const name = document.getElementById('new-item-name').value.trim();
-            const category = document.getElementById('new-item-cat').value;
-            const price = document.getElementById('new-item-price').value.trim();
-            const image = document.getElementById('new-item-img').value.trim();
-
-            if (!name || !price) {
-                alert("Execution Aborted: Variant title and baseline pricing metrics are required.");
+            if(filteredSet.length === 0) {
+                displayShelfTarget.innerHTML = `<div style="grid-column: span 2; text-align:center; padding:3rem 0; color:var(--text-muted);">No products found in this section.</div>`;
                 return;
             }
 
-            const constructedPayload = {
-                id: "df_" + Date.now(), 
-                name: name,
+            filteredSet.forEach(product => {
+                const layoutElement = document.createElement('div');
+                layoutElement.className = "premium-product-card";
+                layoutElement.innerHTML = `
+                    <div class="product-image-container">
+                        <img src="${product.image}" alt="${product.name}" onerror="this.src='https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=500'">
+                    </div>
+                    <div class="product-meta-details">
+                        <span class="product-tag">${product.category}</span>
+                        <h3 class="product-name-heading">${product.name}</h3>
+                        <div class="product-pricing-node">Rs. ${product.price}</div>
+                        
+                        <div class="product-size-selector-row">
+                            <select id="size-node-${product.id}" class="product-size-dropdown">
+                                <option value="M">Size M</option>
+                                <option value="L">Size L</option>
+                                <option value="XL">Size XL</option>
+                                <option value="XXL">Size XXL</option>
+                            </select>
+                        </div>
+                        
+                        <button type="button" class="add-to-bag-cta" onclick="appendItemToActiveBag('${product.id}')" style="margin-top:0.75rem;">Add to Bag</button>
+                    </div>
+                    <div class="inline-management-drawer">
+                        <label>Title</label><input type="text" class="admin-input" id="edit-title-${product.id}" value="${product.name}" style="padding:0.3rem; margin-bottom:0.4rem;">
+                        <label>Price</label><input type="number" class="admin-input" id="edit-price-${product.id}" value="${product.price}" style="padding:0.3rem; margin-bottom:0.4rem;">
+                        <label>Image Link</label><input type="text" class="admin-input" id="edit-img-${product.id}" value="${product.image}" style="padding:0.3rem; margin-bottom:0.4rem;">
+                        <div style="display:flex; gap:0.25rem;">
+                            <button onclick="saveInlineEdits('${product.id}')" style="background:#2b8a3e; color:white; border:none; padding:0.3rem; font-weight:bold; border-radius:4px; cursor:pointer; flex:1;">Save</button>
+                            <button onclick="removeAssetListing('${product.id}')" style="background:#e03131; color:white; border:none; padding:0.3rem; font-weight:bold; border-radius:4px; cursor:pointer; flex:1;">Delete</button>
+                        </div>
+                    </div>
+                `;
+                displayShelfTarget.appendChild(layoutElement);
+            });
+        }
+
+        function filterCatalogSelection(categoryKey, interactiveTabElement) {
+            targetedCategoryFilter = categoryKey;
+            document.querySelectorAll('.category-tab').forEach(tab => tab.classList.remove('active-tab'));
+            interactiveTabElement.classList.add('active-tab');
+            buildStorefrontCatalogUI();
+        }
+
+        function commitNewAsset() {
+            const title = document.getElementById('add-title').value.trim();
+            const category = document.getElementById('add-category').value;
+            const price = document.getElementById('add-price').value.trim();
+            const image = document.getElementById('add-image').value.trim();
+
+            if(!title || !price) {
+                alert("Please fill out the Title and Price fields.");
+                return;
+            }
+
+            const itemPayload = {
+                id: "asset_df_" + Date.now(),
+                name: title,
                 category: category,
                 price: price,
                 image: image || "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=500"
             };
 
-            activeInventoryStore.push(constructedPayload);
-            localStorage.setItem('df_collection_catalog_manifest', JSON.stringify(activeInventoryStore));
-            
-            renderStorefrontCatalog();
-            
-            document.getElementById('new-item-name').value = '';
-            document.getElementById('new-item-price').value = '';
-            document.getElementById('new-item-img').value = '';
-            alert(`"${name}" pushed successfully into live tracking matrix memory!`);
+            databaseState.push(itemPayload);
+            localStorage.setItem('df_catalog_manifest_v2', JSON.stringify(databaseState));
+            buildStorefrontCatalogUI();
+
+            document.getElementById('add-title').value = '';
+            document.getElementById('add-price').value = '';
+            document.getElementById('add-image').value = '';
+            alert("New listing injected successfully.");
         }
 
-        // Inline Single Item Value Modification Saves
-        function commitProductEdits(productId) {
-            const updatedTitle = document.getElementById(`edit-title-${productId}`).value;
-            const updatedPrice = document.getElementById(`edit-price-${productId}`).value;
-            const updatedImg = document.getElementById(`edit-image-${productId}`).value;
+        function saveInlineEdits(productId) {
+            const titleValue = document.getElementById(`edit-title-${productId}`).value.trim();
+            const priceValue = document.getElementById(`edit-price-${productId}`).value.trim();
+            const imgValue = document.getElementById(`edit-img-${productId}`).value.trim();
 
-            const indexPointer = activeInventoryStore.findIndex(item => item.id === productId);
-            if (indexPointer !== -1) {
-                activeInventoryStore[indexPointer].name = updatedTitle;
-                activeInventoryStore[indexPointer].price = updatedPrice;
-                activeInventoryStore[indexPointer].image = updatedImg;
+            const matchIndex = databaseState.findIndex(item => item.id === productId);
+            if(matchIndex !== -1) {
+                databaseState[matchIndex].name = titleValue;
+                databaseState[matchIndex].price = priceValue;
+                databaseState[matchIndex].image = imgValue;
 
-                localStorage.setItem('df_collection_catalog_manifest', JSON.stringify(activeInventoryStore));
-                
-                renderStorefrontCatalog();
-                alert("Product UI parameters refactored successfully.");
+                localStorage.setItem('df_catalog_manifest_v2', JSON.stringify(databaseState));
+                buildStorefrontCatalogUI();
+                alert("Listing configuration updated.");
             }
         }
 
-        // Inventory Purging Module Node
-        function purgeCatalogItem(productId) {
-            if(confirm("Confirm action: Do you wish to completely remove this listing asset variation?")) {
-                activeInventoryStore = activeInventoryStore.filter(item => item.id !== productId);
-                localStorage.setItem('df_collection_catalog_manifest', JSON.stringify(activeInventoryStore));
-                renderStorefrontCatalog();
+        function removeAssetListing(productId) {
+            if(confirm("Permanently delete this product listing?")) {
+                databaseState = databaseState.filter(item => item.id !== productId);
+                localStorage.setItem('df_catalog_manifest_v2', JSON.stringify(databaseState));
+                buildStorefrontCatalogUI();
             }
         }
 
-        // Dynamic Merchant QR Adjustment Engine Hook
-        function updateStoreQR() {
-            const pathLink = document.getElementById('qr-url-modifier').value.trim();
-            if(pathLink) {
-                document.getElementById('merchant-qr-element').src = pathLink;
-                localStorage.setItem('df_boutique_merchant_qr_string', pathLink);
-                alert("Global bank processing QR asset altered across checkout screens.");
-            }
-        }
-
-        // Interactive Shopping Cart System Core Actions
-        function appendItemToCart(productId) {
-            const coreItemData = activeInventoryStore.find(p => p.id === productId);
-            const sizeOptionElement = document.getElementById(`size-selector-${productId}`);
-            const determinedSize = sizeOptionElement ? sizeOptionElement.value : "M";
-
-            const matchingIndex = runningCartState.findIndex(item => item.product.id === productId && item.size === determinedSize);
-
-            if (matchingIndex !== -1) {
-                runningCartState[matchingIndex].qty += 1;
+        function commitQRManifestUpdate() {
+            const valueInput = document.getElementById('global-qr-field').value.trim();
+            if(valueInput) {
+                document.getElementById('checkoutQRDOMElement').src = valueInput;
+                localStorage.setItem('df_qr_string_override', valueInput);
+                alert("Fonepay Merchant QR reference string linked successfully.");
             } else {
-                runningCartState.push({ product: coreItemData, size: determinedSize, qty: 1 });
+                alert("Please enter a valid URL path.");
             }
-
-            redrawCartInterface();
-            recalculateCartTotals();
-
-            // Notify customer that item is added
-            alert(`✨ "${coreItemData.name}" (Size ${determinedSize}) added to your bag!`);
-            
-            // Auto scroll down to registration card details layout form safely
-            document.getElementById('checkout-terminal-panel').scrollIntoView({ behavior: 'smooth' });
         }
 
-        function sliceCartItemQty(index) {
-            runningCartState[index].qty -= 1;
-            if (runningCartState[index].qty <= 0) {
-                runningCartState.splice(index, 1);
+        function appendItemToActiveBag(productId) {
+            const referenceData = databaseState.find(p => p.id === productId);
+            const menuNode = document.getElementById(`size-node-${productId}`);
+            const sizeSelectionString = menuNode ? menuNode.value : "M";
+
+            const exactDuplicatePointer = runningCart.findIndex(row => row.product.id === productId && row.size === sizeSelectionString);
+
+            if(exactDuplicatePointer !== -1) {
+                runningCart[exactDuplicatePointer].qty += 1;
+            } else {
+                runningCart.push({ product: referenceData, size: sizeSelectionString, qty: 1 });
             }
-            redrawCartInterface();
-            recalculateCartTotals();
+
+            renderActiveBagLines();
+            updateLiveFinancialMetrics();
         }
 
-        // Redraw Shopping Cart Line Items DOM
-        function redrawCartInterface() {
-            const container = document.getElementById('cart-items-container');
-            if (runningCartState.length === 0) {
-                container.innerHTML = `<p style="color: var(--text-muted); font-size:0.9rem; text-align:center; padding:1rem 0;">Your cart is empty. Click an item to add selections.</p>`;
+        function removeBagItemQty(indexPosition) {
+            runningCart[indexPosition].qty -= 1;
+            if(runningCart[indexPosition].qty <= 0) {
+                runningCart.splice(indexPosition, 1);
+            }
+            renderActiveBagLines();
+            updateLiveFinancialMetrics();
+        }
+
+        function renderActiveBagLines() {
+            const stackContainer = document.getElementById('cartStack');
+            if(runningCart.length === 0) {
+                stackContainer.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:2rem 0; font-size:0.9rem;">Your shopping bag is empty.</p>`;
                 return;
             }
 
-            container.innerHTML = '';
-            runningCartState.forEach((item, idx) => {
-                const row = document.createElement('div');
-                row.className = 'cart-line-item';
-                row.innerHTML = `
-                    <div style="max-width:70%;">
-                        <strong style="display:block; font-size:0.95rem;">${item.product.name}</strong>
-                        <span style="font-size:0.75rem; color:var(--primary-accent); background:#ffeef2; padding:0.1rem 0.4rem; border-radius:4px; font-weight:bold; display:inline-block; margin-top:0.15rem;">Size: ${item.size}</span>
-                        <div style="font-size:0.8rem; color:var(--text-muted); margin-top:0.1rem;">Rs. ${item.product.price} × ${item.qty}</div>
+            stackContainer.innerHTML = '';
+            runningCart.forEach((lineItem, idx) => {
+                const elementRow = document.createElement('div');
+                elementRow.className = "cart-row-item";
+                elementRow.innerHTML = `
+                    <div style="max-width:75%;">
+                        <div style="font-weight:600; font-size:0.85rem; line-height:1.2;">${lineItem.product.name}</div>
+                        <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.15rem;">Size: ${lineItem.size} | Qty: ${lineItem.qty}</div>
                     </div>
-                    <div style="text-align:right; display:flex; align-items:center; gap:0.5rem;">
-                        <span style="font-weight:bold;">Rs. ${item.product.price * item.qty}</span>
-                        <button type="button" onclick="sliceCartItemQty(${idx})" style="background:none; border:none; color:var(--primary-accent); cursor:pointer; font-weight:bold; font-size:1.1rem; padding:0 0.25rem;">✕</button>
+                    <div style="display:flex; align-items:center; gap:0.5rem;">
+                        <span style="font-size:0.85rem; font-weight:700;">Rs. ${parseInt(lineItem.product.price) * lineItem.qty}</span>
+                        <button type="button" onclick="removeBagItemQty(${idx})" style="background:none; border:none; color:red; cursor:pointer; font-weight:bold; font-size:1rem;">✕</button>
                     </div>
                 `;
-                container.appendChild(row);
+                stackContainer.appendChild(elementRow);
             });
         }
 
-        // Live Financial Calculation Functions
-        function switchDeliveryStrategy(strategyKey, rateFee) {
-            configuredDeliveryFee = rateFee;
-            selectedDeliveryStrategy = strategyKey === "office" ? "Office Delivery" : "Home Delivery";
+        function toggleShippingStrategy(modeKey, numericFee) {
+            runningShippingCost = numericFee;
+            selectedShippingTypeString = modeKey === "office" ? "Office Delivery" : "Home Delivery";
 
-            document.querySelectorAll('.delivery-label-card').forEach(el => el.classList.remove('active-choice'));
-            document.querySelectorAll('input[name="delivery_type"]').forEach(input => input.checked = false);
-
-            if(strategyKey === 'office') {
-                document.getElementById('card-office').classList.add('active-choice');
-                document.getElementById('card-office').querySelector('input').checked = true;
+            document.querySelectorAll('.shipping-card-option').forEach(card => card.classList.remove('selected-shipping'));
+            if(modeKey === 'office') {
+                document.getElementById('ship-office').classList.add('selected-shipping');
             } else {
-                document.getElementById('card-home').classList.add('active-choice');
-                document.getElementById('card-home').querySelector('input').checked = true;
+                document.getElementById('ship-home').classList.add('selected-shipping');
             }
 
-            document.getElementById('metric-shipping').innerText = rateFee;
-            recalculateCartTotals();
+            document.getElementById('summaryShipping').innerText = numericFee;
+            updateLiveFinancialMetrics();
         }
 
-        function recalculateCartTotals() {
-            let itemsAccumulatedSum = 0;
-            runningCartState.forEach(item => {
-                itemsAccumulatedSum += (parseInt(item.product.price) * item.qty);
+        function updateLiveFinancialMetrics() {
+            let runningSubtotalCounter = 0;
+            runningCart.forEach(row => {
+                runningSubtotalCounter += (parseInt(row.product.price) * row.qty);
             });
 
-            const absoluteCalculatedGrandTotal = itemsAccumulatedSum > 0 ? (itemsAccumulatedSum + configuredDeliveryFee) : 0;
+            const evaluatedGrandTotal = runningSubtotalCounter > 0 ? (runningSubtotalCounter + runningShippingCost) : 0;
 
-            document.getElementById('metric-subtotal').innerText = itemsAccumulatedSum.toLocaleString();
-            document.getElementById('metric-grandtotal').innerText = absoluteCalculatedGrandTotal.toLocaleString();
+            document.getElementById('summarySubtotal').innerText = runningSubtotalCounter.toLocaleString();
+            document.getElementById('summaryGrandTotal').innerText = evaluatedGrandTotal.toLocaleString();
         }
 
-        // Serverless Automated Transmit Data Routing Logic
-        function handleOrderSubmission(event) {
+        function executeOrderPayload(event) {
             event.preventDefault();
 
-            if(runningCartState.length === 0) {
-                alert("Your shopping cart is currently empty! Add items before checking out.");
+            if(runningCart.length === 0) {
+                alert("Your bag is empty! Add items before continuing checkout.");
                 return;
             }
 
-            const targetClientName = document.getElementById('cust-name').value.trim();
-            const targetClientPhone = document.getElementById('cust-phone').value.trim();
-            const targetClientAddress = document.getElementById('cust-address').value.trim();
-            const finalAmountDue = document.getElementById('metric-grandtotal').innerText;
+            const inputName = document.getElementById('form-name').value.trim();
+            const inputPhone = document.getElementById('form-phone').value.trim();
+            const inputAddress = document.getElementById('form-address').value.trim();
+            const totalSumVal = document.getElementById('summaryGrandTotal').innerText;
 
-            let ordersBreakdownString = "";
-            runningCartState.forEach((item, index) => {
-                ordersBreakdownString += `${index + 1}. Item: ${item.product.name} [Size: ${item.size}] | Quantity: ${item.qty} (Rs. ${item.product.price} each)\n`;
+            let plainTextManifest = "";
+            runningCart.forEach((row, index) => {
+                plainTextManifest += `${index + 1}. ${row.product.name} (Size: ${row.size}) x${row.qty} [Rs. ${row.product.price} each]\n`;
             });
 
-            // 1. DISPATCH AUTOMATED EMAIL BACKEND ALERTS VIA EMAILJS ENGINE
-            const emailDataParameters = {
-                order_details: ordersBreakdownString,
-                customer_name: targetClientName,
-                customer_phone: targetClientPhone,
-                delivery_type: selectedDeliveryStrategy,
-                delivery_address: targetClientAddress,
-                total_price: finalAmountDue
+            const transitObject = {
+                order_details: plainTextManifest,
+                customer_name: inputName,
+                customer_phone: inputPhone,
+                delivery_type: selectedShippingTypeString,
+                delivery_address: inputAddress,
+                total_price: totalSumVal
             };
 
-            emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, emailDataParameters)
-                .then(() => {
-                    console.log("Order logged successfully inside merchant dashboard records.");
-                }, (error) => {
-                    console.error("Transmission error encountered during email processing:", error);
-                });
+            emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, transitObject)
+                .then(() => console.log("Order logged over API backend records."))
+                .catch(err => console.error("API Logging issue:", err));
 
-            // 2. DISPATCH LIVE WHATSAPP FALLBACK BACKEND LINK
-            const customerMessageTemplate = encodeURIComponent(
-                `🛍️ *DREAM FLAIR COLLECTION - ORDER MANIFEST*\n\n` +
-                `👤 *Customer Name:* ${targetClientName}\n` +
-                `📱 *Contact Phone:* ${targetClientPhone}\n` +
-                `🚚 *Delivery Context:* ${selectedDeliveryStrategy} (Fee Applied)\n` +
-                `🏠 *Destination Address:* ${targetClientAddress}\n\n` +
-                `📋 *Items Requested Lines Summary:*\n${ordersBreakdownString}\n` +
-                `💰 *TOTAL AGGREGATE LEDGER DUE:* Rs. ${finalAmountDue}\n\n` +
-                `💳 _Note: Pre-Payment screenshot validation attached in chat screen sequence instructions below._`
+            const encodeWhatsAppPayloadString = encodeURIComponent(
+                `🛍️ *DREAM FLAIR COLLECTION - CONFIRMED PURCHASE*\n\n` +
+                `👤 *Customer:* ${inputName}\n` +
+                `📱 *Phone:* ${inputPhone}\n` +
+                `🚚 *Method:* ${selectedShippingTypeString}\n` +
+                `📍 *Address:* ${inputAddress}\n\n` +
+                `📦 *Items List Summarized:*\n${plainTextManifest}\n` +
+                `💰 *TOTAL DUE PRICE:* Rs. ${totalSumVal}\n\n` +
+                `✅ _Please reply with your payment proof screenshot below._`
             );
 
-            const directLineTargetNumber = "9779815339830";
-            const integratedWhatsAppAnchorRoute = `https://wa.me/${directLineTargetNumber}?text=${customerMessageTemplate}`;
+            const studioWhatsAppRoute = `https://wa.me/9779815339830?text=${encodeWhatsAppPayloadString}`;
 
-            alert("Thank you for your order! Your purchase request is compiled. Click OK to open WhatsApp and send your payment screenshot validation directly to the studio.");
+            alert("Order Compiled! Click OK to open WhatsApp and send your confirmation payload directly.");
             
-            runningCartState = [];
-            document.getElementById('checkout-execution-form').reset();
-            redrawCartInterface();
-            recalculateCartTotals();
+            runningCart = [];
+            document.getElementById('form-name').value = '';
+            document.getElementById('form-phone').value = '';
+            document.getElementById('form-address').value = '';
+            renderActiveBagLines();
+            updateLiveFinancialMetrics();
 
-            window.open(integratedWhatsAppAnchorRoute, '_blank');
+            window.open(studioWhatsAppRoute, '_blank');
         }
     </script>
 </body>
